@@ -13,11 +13,13 @@ click @ file:///D:/bld/click_1758270401364/work
 cloudpickle @ file:///home/conda/feedstock_root/build_artifacts/cloudpickle_1736947526808/work
 colorama @ file:///home/conda/feedstock_root/build_artifacts/colorama_1733218098505/work
 contourpy @ file:///D:/bld/contourpy_1744743084386/work
+cycler==0.12.1
 cytoolz @ file:///D:/bld/cytoolz_1760905704447/work
 dask @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_dask-core_1760473436/work
 distributed @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_distributed_1760476147/work
 ecmwf-datastores-client @ file:///home/conda/feedstock_root/build_artifacts/ecmwf-datastores-client_1753873184203/work
 flatbuffers @ file:///home/conda/feedstock_root/build_artifacts/python-flatbuffers_1733838640534/work
+fonttools==4.60.1
 fsspec @ file:///home/conda/feedstock_root/build_artifacts/fsspec_1756908513222/work
 gast @ file:///home/conda/feedstock_root/build_artifacts/gast_1733299680490/work
 google-pasta @ file:///home/conda/feedstock_root/build_artifacts/google-pasta_1733852499742/work
@@ -32,12 +34,14 @@ importlib_metadata @ file:///home/conda/feedstock_root/build_artifacts/bld/rattl
 Jinja2 @ file:///home/conda/feedstock_root/build_artifacts/jinja2_1741263328855/work
 joblib @ file:///home/conda/feedstock_root/build_artifacts/joblib_1756321760188/work
 keras @ file:///home/conda/feedstock_root/build_artifacts/keras_1755182020562/work
+kiwisolver==1.4.9
 libclang==18.1.1
 locket @ file:///home/conda/feedstock_root/build_artifacts/locket_1650660393415/work
 lz4 @ file:///D:/bld/lz4_1756752015511/work
 Markdown @ file:///home/conda/feedstock_root/build_artifacts/markdown_1757093412127/work
 markdown-it-py @ file:///home/conda/feedstock_root/build_artifacts/markdown-it-py_1754951200865/work
 MarkupSafe @ file:///D:/bld/markupsafe_1759055175616/work
+matplotlib==3.10.7
 mdurl @ file:///home/conda/feedstock_root/build_artifacts/mdurl_1733255585584/work
 ml-dtypes @ file:///D:/bld/ml_dtypes_1756742121008/work
 msgpack @ file:///D:/bld/msgpack-python_1759930472449/work
@@ -57,6 +61,7 @@ psutil @ file:///D:/bld/psutil_1760894000425/work
 pyarrow==19.0.1
 pycparser @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_pycparser_1733195786/work
 Pygments @ file:///home/conda/feedstock_root/build_artifacts/pygments_1750615794071/work
+pyparsing==3.2.5
 PySocks @ file:///D:/bld/pysocks_1733217287171/work
 python-dateutil @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_python-dateutil_1751104122/work
 pytz @ file:///home/conda/feedstock_root/build_artifacts/pytz_1742920838005/work
