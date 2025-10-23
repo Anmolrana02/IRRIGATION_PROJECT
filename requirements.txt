@@ -32,6 +32,7 @@ importlib_metadata @ file:///home/conda/feedstock_root/build_artifacts/bld/rattl
 Jinja2 @ file:///home/conda/feedstock_root/build_artifacts/jinja2_1741263328855/work
 joblib @ file:///home/conda/feedstock_root/build_artifacts/joblib_1756321760188/work
 keras @ file:///home/conda/feedstock_root/build_artifacts/keras_1755182020562/work
+libclang==18.1.1
 locket @ file:///home/conda/feedstock_root/build_artifacts/locket_1650660393415/work
 lz4 @ file:///D:/bld/lz4_1756752015511/work
 Markdown @ file:///home/conda/feedstock_root/build_artifacts/markdown_1757093412127/work
@@ -67,8 +68,9 @@ scipy @ file:///C:/bld/scipy-split_1739790833536/work/dist/scipy-1.15.2-cp310-cp
 six @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_six_1753199211/work
 sortedcontainers @ file:///home/conda/feedstock_root/build_artifacts/sortedcontainers_1738440353519/work
 tblib @ file:///home/conda/feedstock_root/build_artifacts/tblib_1743515515538/work
-tensorboard @ file:///home/conda/feedstock_root/build_artifacts/tensorboard_1740522445235/work/tensorboard-2.19.0-py3-none-any.whl#sha256=5e71b98663a641a7ce8a6e70b0be8e1a4c0c45d48760b076383ac4755c35b9a0
+tensorboard==2.20.0
 tensorboard_data_server @ file:///D:/bld/tensorboard-data-server_1759413103393/work/tensorboard_data_server-0.7.0-py3-none-any.whl#sha256=efeb0cc783f516ea97f2110a090757fea3a47df4a628ef76613e5d791b8d7e70
+tensorflow==2.20.0
 tensorflow_cpu==2.19.1
 termcolor @ file:///home/conda/feedstock_root/build_artifacts/termcolor_1746039537955/work
 threadpoolctl @ file:///home/conda/feedstock_root/build_artifacts/threadpoolctl_1741878222898/work
