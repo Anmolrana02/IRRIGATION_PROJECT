@@ -37,6 +37,9 @@ CROP_PROFILES = {
 
 # --- Caching Functions (Crucial for Streamlit Performance) ---
 
+# Target column name MUST match the name used when the scaler was trained
+TARGET_COL_NAME = 'real_soil_moisture_mm'
+
 @st.cache_resource
 def load_assets(model_type):
     """Loads and caches the model, scaler, and full dataset."""
@@ -53,6 +56,7 @@ def load_assets(model_type):
         df = pd.read_csv(paths['data'], parse_dates=['date'])
         
         # Rename target column for consistent use in the app
+        # NOTE: The variable in the app is 'real_moisture', but the scaler still uses 'real_soil_moisture_mm'
         df.rename(columns={'real_soil_moisture_mm': 'real_moisture'}, inplace=True)
         
         return df, model, scaler
@@ -74,12 +78,13 @@ def prepare_prediction_data(last_30_days_df, scaler):
     
     # 2. Add/Zero-out missing features to match the scaler's training data features
     for col in scaler_feature_names:
-        if col not in df_encoded.columns and col != 'real_moisture': # 'real_moisture' is the target and will be zeroed below
+        # Check against the original column name used in the scaler: TARGET_COL_NAME
+        if col not in df_encoded.columns and col != TARGET_COL_NAME: 
             df_encoded[col] = 0.0
             
-    # Add a dummy target column for proper scaling if it's missing (it should be for a future day)
-    if 'real_moisture' not in df_encoded.columns:
-        df_encoded['real_moisture'] = 0.0
+    # Add a dummy target column for proper scaling if it's missing
+    if TARGET_COL_NAME not in df_encoded.columns:
+        df_encoded[TARGET_COL_NAME] = 0.0
 
     # 3. Ensure column order is identical
     df_encoded = df_encoded[scaler_feature_names]
@@ -95,7 +100,8 @@ def inverse_transform_prediction(prediction_scaled, scaler):
     num_features = scaler.n_features_in_
     dummy_row = np.zeros((1, num_features))
     
-    target_col_index = list(scaler.feature_names_in_).index('real_moisture')
+    # FIX: Use the original column name (TARGET_COL_NAME) to find the index in the scaler
+    target_col_index = list(scaler.feature_names_in_).index(TARGET_COL_NAME)
     
     # Place the prediction into the target column position
     dummy_row[0, target_col_index] = prediction_scaled
@@ -128,9 +134,15 @@ def run_prediction_logic(df, model, scaler, district_name):
     current_moisture = input_df.iloc[-1]['real_moisture'] 
     
     # --- Predict ---
+    # Temporarily rename 'real_moisture' back to the original name for prediction/scaling
+    input_df.rename(columns={'real_moisture': TARGET_COL_NAME}, inplace=True)
+    
     input_sequence = prepare_prediction_data(input_df, scaler)
     predicted_scaled_value = model.predict(input_sequence, verbose=0)[0][0]
     predicted_moisture_mm = inverse_transform_prediction(predicted_scaled_value, scaler)
+    
+    # Restore the column name in the input_df copy, though it's not strictly necessary here.
+    input_df.rename(columns={TARGET_COL_NAME: 'real_moisture'}, inplace=True) 
     
     return prediction_date, predicting_for_crop, current_moisture, predicted_moisture_mm
 
@@ -145,11 +157,11 @@ def plot_comparison_timeseries(df_real, df_sim, district_name):
         return
         
     # Use copies to avoid modifying the cached dataframes
-    df_real_copy = df_real.copy().rename(columns={'real_moisture': 'real_moisture_real_data'})
-    df_sim_copy = df_sim.copy().rename(columns={'real_moisture': 'simulated_moisture_sim_data'})
+    df_real_copy = df_real.copy().rename(columns={'real_moisture': 'Real (Satellite) Moisture'})
+    df_sim_copy = df_sim.copy().rename(columns={'real_moisture': 'Simulated (Water-Balance) Moisture'})
 
-    df_real_dist = df_real_copy[df_real_copy['district'] == district_name][['date', 'real_moisture_real_data']]
-    df_sim_dist = df_sim_copy[df_sim_copy['district'] == district_name][['date', 'simulated_moisture_sim_data']]
+    df_real_dist = df_real_copy[df_real_copy['district'] == district_name][['date', 'Real (Satellite) Moisture']]
+    df_sim_dist = df_sim_copy[df_sim_copy['district'] == district_name][['date', 'Simulated (Water-Balance) Moisture']]
 
     df_merged = pd.merge(df_real_dist, df_sim_dist, on='date', how='inner')
     df_merged.set_index('date', inplace=True)
@@ -254,10 +266,11 @@ def main():
                 col_info, col_pred, col_dec = st.columns(3)
 
                 with col_info:
+                    # current_moisture and today_date are calculated correctly
                     st.metric(
                         label="Last Recorded Moisture", 
                         value=f"{current_moisture:.2f} mm",
-                        help=f"Moisture on {today_date.strftime('%Y-%m-%d')} used as base for prediction."
+                        help=f"Moisture on {prediction_date.strftime('%Y-%m-%d')} used as base for prediction." # Note: today_date is not passed from run_prediction_logic
                     )
                     st.info(f"Crop: **{predicting_for_crop}** (Trigger: {trigger_level:.2f} mm)")
 
